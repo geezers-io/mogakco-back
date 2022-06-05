@@ -9,7 +9,7 @@ pipeline {
         stage('Build') {
             steps {
                 sh '''
-                    ./jenkins/build/gradle.sh ./gradlew clean build -x test
+                    ./jenkins/build/gradle.sh gradle clean build -x test
                     ./jenkins/build/build.sh
                     '''
             }
