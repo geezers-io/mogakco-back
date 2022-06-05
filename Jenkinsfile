@@ -7,7 +7,7 @@ pipeline {
 
     stages {
         stage('Build') {
-            step {
+            steps {
                 sh '''
                     ./jenkins/build/gradle.sh ./gradlew clean build -x test
                     ./jenkins/build/build.sh
@@ -24,7 +24,7 @@ pipeline {
         }
 
         stage('Test') {
-            step {
+            steps {
                 sh './jenkins/test/gradle.sh ./gradlew test'
             }
             post {
@@ -38,7 +38,7 @@ pipeline {
         }
 
         stage('Push') {
-            step {
+            steps {
                 sh './jenkins/push/push.sh'
             }
             post {
@@ -51,7 +51,7 @@ pipeline {
             }
         }
         stage('Deploy') {
-            step {
+            steps {
                 sh './jenkins/deploy/deploy.sh'
             }
             post {
