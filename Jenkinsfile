@@ -6,10 +6,18 @@ pipeline {
     }
 
     stages {
+        stage('Checkout') {
+            steps {
+                git branch: 'main',
+                    credentialsId: 'jenkins-github-access-token',
+                    url: 'https://github.com/geezers-io/mogakco-back.git'
+            }
+        }
+
         stage('Build') {
             steps {
                 sh '''
-                    ./jenkins/build/gradle.sh ./gradlew clean build -x test
+                    ./jenkins/build/gradle.sh gradle clean build -x test
                     ./jenkins/build/build.sh
                     '''
             }
@@ -25,7 +33,7 @@ pipeline {
 
         stage('Test') {
             steps {
-                sh './jenkins/test/gradle.sh ./gradlew test'
+                sh './jenkins/test/gradle.sh gradle test'
             }
             post {
                 success {

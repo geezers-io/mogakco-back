@@ -5,7 +5,7 @@ echo "***** Deploying ******"
 echo "**********************"
 
 echo mogakco-back >/tmp/.auth
-echo $BUILD_TAG >>/tmp/.auth
+echo $BUILD_NUMBER >>/tmp/.auth
 
 scp -i ~/.ssh/id_rsa /tmp/.auth ubuntu@ec2-3-36-75-245.ap-northeast-2.compute.amazonaws.com:/tmp/.auth
 
@@ -18,6 +18,7 @@ if [ -n "$containerIdOfMogakcoBack" ]; then isRunning=true; else isRunning=false
 if [ -n "$isRunning" ]; then
   docker stop "$containerIdOfMogakcoBack"
   docker rm "$containerIdOfMogakcoBack"
+  docker rmi $(docker images --filter=reference="$IMAGE" -q)
 fi
 
 cd jenkins/deploy && docker compose up -d
