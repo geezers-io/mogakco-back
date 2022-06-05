@@ -1,0 +1,6 @@
+version: '3'
+services:
+  app:
+    image: "mogakco-back:$BUILD_TAG"
+    build:
+      context: ../..

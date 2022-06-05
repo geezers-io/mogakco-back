@@ -1,0 +1,5 @@
+version: '3'
+services:
+  gradle:
+    image: 'jeidiiy/$IMAGE:$TAG'
+    container_name: mogakco-back
