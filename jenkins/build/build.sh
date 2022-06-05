@@ -1,5 +1,11 @@
 #!/bin/bash
 
+echo "**********************"
+echo "**** Building jar ****"
+echo "**********************"
+
+./gradlew clean build -x test
+
 echo "*******************************"
 echo "**** Building Docker Image ****"
 echo "*******************************"
