@@ -18,8 +18,7 @@ if [ -n "$containerIdOfMogakcoBack" ]; then isRunning=true; else isRunning=false
 if [ -n "$isRunning" ]; then
   docker stop "$containerIdOfMogakcoBack"
   docker rm "$containerIdOfMogakcoBack"
-  docker rmi "$IMAGE:$TAG"
-  docker rmi "jeidiiy/$IMAGE:$TAG"
+  docker rmi $(docker images --filter=reference="$IMAGE" -q)
 fi
 
 cd jenkins/deploy && docker compose up -d
