@@ -3,3 +3,5 @@ services:
   gradle:
     image: 'jeidiiy/$IMAGE:$TAG'
     container_name: mogakco-back
+    ports:
+      - "8081:8081"
