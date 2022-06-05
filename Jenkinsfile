@@ -25,7 +25,7 @@ pipeline {
 
         stage('Test') {
             steps {
-                sh './jenkins/test/gradle.sh ./gradlew test'
+                sh './jenkins/test/gradle.sh gradle test'
             }
             post {
                 success {
