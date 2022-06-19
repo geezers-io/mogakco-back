@@ -36,9 +36,11 @@ dependencies {
     testImplementation 'org.springframework.boot:spring-boot-starter-test'
     testImplementation 'org.springframework.restdocs:spring-restdocs-mockmvc'
     testImplementation 'org.springframework.security:spring-security-test'
+    testAnnotationProcessor 'org.projectlombok:lombok'
 }
 
 tasks.named('test') {
+    delete file(snippetsDir)
     outputs.dir snippetsDir
     useJUnitPlatform()
 }
@@ -46,6 +48,25 @@ tasks.named('test') {
 tasks.named('asciidoctor') {
     inputs.dir snippetsDir
     dependsOn test
+}
+
+asciidoctor.doFirst {
+    delete file('src/main/resources/static/docs')
+}
+
+
+tasks.named('bootJar') {
+    dependsOn asciidoctor
+}
+
+tasks.register("copyDocs", Copy) {
+    dependsOn asciidoctor
+    from(file("build/asciidoc/html5"))
+    into(file("src/main/resources/static/docs"))
+}
+
+tasks.named('bootJar') {
+    dependsOn copyDocs
 }
 
 jar {
