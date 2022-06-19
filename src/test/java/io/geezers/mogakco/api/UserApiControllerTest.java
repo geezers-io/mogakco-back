@@ -26,6 +26,7 @@ import org.springframework.web.context.WebApplicationContext;
 
 import static org.springframework.restdocs.mockmvc.MockMvcRestDocumentation.document;
 import static org.springframework.restdocs.mockmvc.MockMvcRestDocumentation.documentationConfiguration;
+import static org.springframework.restdocs.mockmvc.RestDocumentationRequestBuilders.get;
 import static org.springframework.restdocs.mockmvc.RestDocumentationRequestBuilders.post;
 import static org.springframework.restdocs.operation.preprocess.Preprocessors.prettyPrint;
 import static org.springframework.restdocs.operation.preprocess.Preprocessors.removeHeaders;
@@ -59,6 +60,21 @@ class UserApiControllerTest {
                         .withRequestDefaults(prettyPrint(), removeHeaders("Host"))
                         .withResponseDefaults(prettyPrint()))
                 .apply(springSecurity()).build();
+    }
+
+    @DisplayName("인증 상태 검증 성공")
+    @WithMockUser
+    @Test
+    void testAuthenticationVerifyingSuccess() throws Exception {
+        mockMvc.perform(get(Endpoint.Api.AUTH))
+                .andExpect(status().isOk());
+    }
+
+    @DisplayName("인증 상태 검증 실패")
+    @Test
+    void testAuthenticationVerifyingFailed() throws Exception {
+        mockMvc.perform(get(Endpoint.Api.AUTH))
+                .andExpect(status().isUnauthorized());
     }
 
     @DisplayName("회원가입 성공")
