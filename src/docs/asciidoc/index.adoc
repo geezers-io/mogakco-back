@@ -1,0 +1,78 @@
+ifndef::snippets[]
+:snippets: ../../../build/generated-snippets
+endif::[]
+= Mogakco API Reference
+:doctype: book
+:icons: font
+:source-highlighter: highlightjs
+:toc: left
+:toclevels: 2
+:sectlinks:
+
+== Overview
+
+=== HTTP Status Code
+|===
+|status|description
+
+|200 OK|요청을 성공적으로 수행
+|201 Created|요청을 성공적으로 수행하고 자원 생성
+|400 BadRequest|사용자 입력값이 형식에 맞지 않음
+|401 Unauthorized|사용자 인증 실패
+|403 Forbidden|사용자 인가 실패
+|404 Not Found|존재하지 않는 자원 요청
+|405 Method Not Support|메소드를 지원하지 않거나 잘못된 메소드로 요청함
+|409 Conflict|설계상 수행할 수 없음
+|500 Internal Server Error|서버 에러
+|===
+
+오류 발생 시 공통적인 오류 응답은 다음과 같다.
+[cols="1,1,2,1"]
+
+|===
+|Name|Type|Description|Required
+
+|status|int|에러에 따른 상태 코드|O
+|message|String|에러 메시지|O
+|===
+
+== 회원가입
+
+include::{snippets}/signup/request-fields.adoc[]
+
+.request
+include::{snippets}/signup/http-request.adoc[]
+
+.response
+include::{snippets}/signup/http-response.adoc[]
+
+== 로그인
+
+include::{snippets}/login/request-fields.adoc[]
+
+.request
+include::{snippets}/login/http-request.adoc[]
+
+.response
+include::{snippets}/login/http-response.adoc[]
+
+== 로그아웃
+
+.URL
+/api/v1/logout
+
+.Method
+POST
+
+.URL Params
+NONE
+
+.Data Params
+NONE
+
+
+.request
+include::{snippets}/logout/http-request.adoc[]
+
+.response
+include::{snippets}/logout/http-response.adoc[]

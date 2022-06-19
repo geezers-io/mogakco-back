@@ -1,0 +1,41 @@
+.{{title}}
+.URL
+{{url}}
+
+.Method
+{{method}}
+
+.URL Params
+
+ifdef::urlParams[]
+[cols="1, 1, 2, 1, 3"]
+|===
+|Name|Type|Description|Required|
+
+{{ #fields }}
+|{{path}}
+|{{type}}
+|{{description}}
+|{{required}}
+{{ /fields }}
+|===
+endif::[]
+ifndef::urlParams[]
+None
+endif::[]
+
+.Data Params
+[caption=""]
+[cols="1, 1, 2, 1, 3"]
+|===
+|Name|Type|Description|Required|Constraints
+
+{{ #fields }}
+|{{path}}
+|{{type}}
+|{{description}}
+|{{required}}
+|{{constraints}}
+{{ /fields }}
+
+|===
