@@ -39,13 +39,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     private final UserDetailsService userDetailsService;
     private final PasswordEncoder passwordEncoder;
     private final String SESSION_ID = "JSESSIONID";
-    private final String[] RESOURCE_ACCESS_WHITELIST = {"/css/**", "/js/**", "/img/**", "/docs/**"};
     private final String[] DEFAULT_ACCESS_WHITELIST = {Endpoint.Api.LOGIN, "/h2-console/**"};
-
-    @Override
-    public void configure(WebSecurity web) {
-        web.ignoring().antMatchers(RESOURCE_ACCESS_WHITELIST);
-    }
 
     @Override
     protected void configure(HttpSecurity http) throws Exception {
