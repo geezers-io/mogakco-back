@@ -4,14 +4,11 @@ server:
     whitelabel:
       enabled: false
 spring:
+  profiles:
+    active: local
   mvc:
     throw-exception-if-no-handler-found: true
     dispatch-options-request: false
-  datasource:
-    url: jdbc:h2:mem:testdb
-    username: sa
-    password:
-    driver-class-name: org.h2.Driver
-  h2:
-    console:
-      enabled: true
+  jackson:
+    serialization:
+      write-dates-as-timestamps: false
