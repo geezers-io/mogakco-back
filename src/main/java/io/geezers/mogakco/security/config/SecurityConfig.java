@@ -15,7 +15,6 @@ import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.AuthenticationProvider;
 import org.springframework.security.authentication.ProviderManager;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
-import org.springframework.security.config.annotation.web.builders.WebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -38,7 +37,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     private final ObjectMapper objectMapper;
     private final UserDetailsService userDetailsService;
     private final PasswordEncoder passwordEncoder;
-    private final String SESSION_ID = "JSESSIONID";
+    private final String SESSION_ID = "SESSION";
     private final String[] DEFAULT_ACCESS_WHITELIST = {Endpoint.Api.LOGIN, "/h2-console/**"};
 
     @Override

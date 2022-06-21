@@ -5,7 +5,6 @@ import io.geezers.mogakco.api.common.Endpoint;
 import io.geezers.mogakco.api.user.UserApiController;
 import io.geezers.mogakco.domain.dto.user.UserLoginRequestDto;
 import io.geezers.mogakco.domain.dto.user.UserSignupRequestDto;
-import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -16,6 +15,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.MediaType;
+import org.springframework.mock.web.MockHttpServletRequest;
 import org.springframework.restdocs.RestDocumentationContextProvider;
 import org.springframework.restdocs.RestDocumentationExtension;
 import org.springframework.security.test.context.support.WithMockUser;
@@ -37,7 +37,6 @@ import static org.springframework.restdocs.snippet.Attributes.key;
 import static org.springframework.security.test.web.servlet.setup.SecurityMockMvcConfigurers.springSecurity;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
-@Slf4j
 @Transactional
 @AutoConfigureMockMvc
 @ExtendWith(RestDocumentationExtension.class)
@@ -114,8 +113,9 @@ class UserApiControllerTest {
     @DisplayName("이메일 중복 오류로 인한 회원가입 실패")
     @Test
     void testSignupIsFailedByEmailDuplicate() throws Exception {
+        MockHttpServletRequest request = new MockHttpServletRequest();
         UserSignupRequestDto signupRequestDto = getUserSignupRequestDto(getValidEmail(), getValidPassword());
-        userApiController.signup(signupRequestDto);
+        userApiController.signup(signupRequestDto, request);
 
         mockMvc.perform(post(Endpoint.Api.USER)
                         .contentType(MediaType.APPLICATION_JSON)
@@ -162,9 +162,10 @@ class UserApiControllerTest {
     @DisplayName("로그인 성공")
     @Test
     void testLoginIsSuccess() throws Exception {
+        MockHttpServletRequest request = new MockHttpServletRequest();
         // 테스트 유저 회원가입
         UserSignupRequestDto signupRequestDto = getUserSignupRequestDto(getValidEmail(), getValidPassword());
-        userApiController.signup(signupRequestDto);
+        userApiController.signup(signupRequestDto, request);
 
         UserLoginRequestDto loginRequestDto = getLoginRequestDto(getValidEmail(), getValidPassword());
 
