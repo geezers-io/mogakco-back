@@ -8,9 +8,23 @@ pipeline {
     stages {
         stage('Checkout') {
             steps {
-                git branch: 'main',
+                git branch: 'fix/MK-37',
                     credentialsId: 'jenkins-github-access-token',
                     url: 'https://github.com/geezers-io/mogakco-back.git'
+            }
+        }
+
+        stage('Test') {
+            steps {
+                sh './jenkins/test/test.sh'
+            }
+            post {
+                success {
+                    echo '**** Test success ****'
+                }
+                failure {
+                    echo '**** Test failed ****'
+                }
             }
         }
 
@@ -26,20 +40,6 @@ pipeline {
                 }
                 failure {
                     echo '**** build failed ****'
-                }
-            }
-        }
-
-        stage('Test') {
-            steps {
-                sh './jenkins/test/test.sh'
-            }
-            post {
-                success {
-                    echo '**** Test success ****'
-                }
-                failure {
-                    echo '**** Test failed ****'
                 }
             }
         }

@@ -4,7 +4,7 @@ echo "**********************"
 echo "**** Building jar ****"
 echo "**********************"
 
-./gradlew clean build -x test
+./gradlew build -x test
 
 echo "*******************************"
 echo "**** Building Docker Image ****"
