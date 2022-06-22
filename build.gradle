@@ -54,6 +54,8 @@ tasks.named('asciidoctor') {
 }
 
 asciidoctor.doFirst {
+    if (file('build/generated-snippets'))
+        mkdir 'build/generated-snippets'
     if (file('src/main/resources/static/docs'))
         delete file('src/main/resources/static/docs')
 }
