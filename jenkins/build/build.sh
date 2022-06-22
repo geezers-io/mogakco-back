@@ -1,10 +1,10 @@
 #!/bin/bash
 
-echo "**********************"
-echo "**** Building jar ****"
-echo "**********************"
+echo "**********************************"
+echo "**** Testing and Building jar ****"
+echo "**********************************"
 
-./gradlew build -x test
+./gradlew clean build
 
 echo "*******************************"
 echo "**** Building Docker Image ****"

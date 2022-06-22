@@ -14,20 +14,6 @@ pipeline {
             }
         }
 
-        stage('Test') {
-            steps {
-                sh './jenkins/test/test.sh'
-            }
-            post {
-                success {
-                    echo '**** Test success ****'
-                }
-                failure {
-                    echo '**** Test failed ****'
-                }
-            }
-        }
-
         stage('Build') {
             steps {
                 sh '''
