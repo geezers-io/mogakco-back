@@ -133,7 +133,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
     @Bean
     public AjaxAuthenticationSuccessHandler authenticationSuccessHandler() {
-        return new AjaxAuthenticationSuccessHandler();
+        return new AjaxAuthenticationSuccessHandler(objectMapper);
     }
 
     @Bean

@@ -16,6 +16,11 @@ import static io.geezers.mogakco.api.util.ApiErrorResponseUtil.getErrorResponseD
 @RestControllerAdvice
 public class CommonApiControllerAdvice {
 
+    @ExceptionHandler(IllegalArgumentException.class)
+    public ResponseEntity<ErrorResponseDto> handleIllegalArgumentException(IllegalArgumentException exception) {
+        return getErrorResponseDtoResponseEntity(HttpServletResponse.SC_BAD_REQUEST, exception.getMessage());
+    }
+
     @ExceptionHandler(NoHandlerFoundException.class)
     public ResponseEntity<ErrorResponseDto> handleNotFoundException(NoHandlerFoundException exception) {
         return getErrorResponseDtoResponseEntity(HttpServletResponse.SC_NOT_FOUND, exception.getMessage());
