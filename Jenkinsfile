@@ -8,13 +8,13 @@ pipeline {
     stages {
         stage('Checkout') {
             steps {
-                git branch: 'fix/MK-37',
+                git branch: 'main',
                     credentialsId: 'jenkins-github-access-token',
                     url: 'https://github.com/geezers-io/mogakco-back.git'
             }
         }
 
-        stage('Build') {
+        stage('Test and Build') {
             steps {
                 sh '''
                     ./jenkins/build/build.sh
