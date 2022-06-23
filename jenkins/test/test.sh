@@ -4,4 +4,4 @@ echo "**********************"
 echo "****** Testing *******"
 echo "**********************"
 
-./gradlew test
+./gradlew clean test
