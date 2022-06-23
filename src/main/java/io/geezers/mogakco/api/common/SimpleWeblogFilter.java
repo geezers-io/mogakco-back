@@ -27,7 +27,7 @@ public class SimpleWeblogFilter implements Filter {
             double endTimeNano = System.nanoTime();
             double processingTimeNano = endTimeNano - startTimeNano;
             double processingTimeMillis = processingTimeNano / 1000 / 1000;
-            double processingTimeMillisRoundedToThreeDecimalPlaces = ((double) Math.round(processingTimeMillis) * 1000) / 1000;
+            double processingTimeMillisRoundedToThreeDecimalPlaces = Math.round(processingTimeMillis * 1000) / 1000.0;
 
             String method = request.getMethod();
             String requestURI = request.getRequestURI();
