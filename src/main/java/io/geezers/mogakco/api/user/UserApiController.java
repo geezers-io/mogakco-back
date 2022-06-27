@@ -11,7 +11,6 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
@@ -48,9 +47,8 @@ public class UserApiController {
     }
 
     @GetMapping("/authentication")
-    public ResponseEntity<Void> authenticate(Authentication authentication) {
-        Object principal = authentication.getPrincipal();
-        if (principal == null) {
+    public ResponseEntity<Void> authenticate(HttpServletRequest request) {
+        if (request.getSession(false) == null) {
             return ResponseEntity.status(HttpServletResponse.SC_UNAUTHORIZED).build();
         }
         return ResponseEntity.status(HttpServletResponse.SC_OK).build();
