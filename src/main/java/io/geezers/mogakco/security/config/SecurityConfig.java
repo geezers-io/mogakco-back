@@ -48,6 +48,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         http.authorizeRequests()
                 .antMatchers(DEFAULT_ACCESS_WHITELIST).permitAll()
                 .antMatchers(HttpMethod.POST, Endpoint.Api.USER).permitAll()
+                .antMatchers(HttpMethod.GET, Endpoint.Api.AUTH).permitAll()
                 .anyRequest().authenticated();
         http
                 .formLogin().disable();
