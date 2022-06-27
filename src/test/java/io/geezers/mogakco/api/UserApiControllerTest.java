@@ -16,6 +16,7 @@ import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMock
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.MediaType;
 import org.springframework.mock.web.MockHttpServletRequest;
+import org.springframework.mock.web.MockHttpSession;
 import org.springframework.restdocs.RestDocumentationContextProvider;
 import org.springframework.restdocs.RestDocumentationExtension;
 import org.springframework.security.test.context.support.WithMockUser;
@@ -53,26 +54,30 @@ class UserApiControllerTest {
 
     @BeforeEach
     public void setUp(WebApplicationContext webApplicationContext, RestDocumentationContextProvider restDocumentation) {
-        this.mockMvc = MockMvcBuilders.webAppContextSetup(webApplicationContext)
+        this.mockMvc = MockMvcBuilders
+                .webAppContextSetup(webApplicationContext)
                 .apply(documentationConfiguration(restDocumentation)
-                        .operationPreprocessors()
-                        .withRequestDefaults(prettyPrint(), removeHeaders("Host"))
-                        .withResponseDefaults(prettyPrint()))
-                .apply(springSecurity()).build();
+                               .operationPreprocessors()
+                               .withRequestDefaults(prettyPrint(), removeHeaders("Host"))
+                               .withResponseDefaults(prettyPrint()))
+                .apply(springSecurity())
+                .build();
     }
 
     @DisplayName("인증 상태 검증 성공")
-    @WithMockUser
     @Test
     void testAuthenticationVerifyingSuccess() throws Exception {
-        mockMvc.perform(get(Endpoint.Api.AUTH))
+        MockHttpSession mockHttpSession = new MockHttpSession();
+        mockMvc
+                .perform(get(Endpoint.Api.AUTH).session(mockHttpSession))
                 .andExpect(status().isOk());
     }
 
     @DisplayName("인증 상태 검증 실패")
     @Test
     void testAuthenticationVerifyingFailed() throws Exception {
-        mockMvc.perform(get(Endpoint.Api.AUTH))
+        mockMvc
+                .perform(get(Endpoint.Api.AUTH))
                 .andExpect(status().isUnauthorized());
     }
 
@@ -81,25 +86,28 @@ class UserApiControllerTest {
     void testSignupIsSuccess() throws Exception {
         UserSignupRequestDto signupRequestDto = getUserSignupRequestDto(getValidEmail(), getValidPassword());
 
-        mockMvc.perform(post(Endpoint.Api.USER)
-                        .contentType(MediaType.APPLICATION_JSON)
-                        .content(objectMapper.writeValueAsString(signupRequestDto)))
+        mockMvc
+                .perform(post(Endpoint.Api.USER)
+                                 .contentType(MediaType.APPLICATION_JSON)
+                                 .content(objectMapper.writeValueAsString(signupRequestDto)))
                 .andExpect(status().isCreated())
-                .andDo(document("signup",
-                        requestFields(
-                                attributes(
-                                        key("title").value("Data Params"), key("url").value(Endpoint.Api.USER),
-                                        key("method").value("POST")),
-                                fieldWithPath("email").description("").
-                                        attributes(key("required").value("O"))
-                                        .attributes(key("constraints").value("@Email 형식을 맞추어야 함")),
-                                fieldWithPath("password").description("")
-                                        .attributes(key("required").value("O"))
-                                        .attributes(key("constraints").value("Null 불가, 빈 문자열 불가")))));
+                .andDo(document("signup", requestFields(
+                        attributes(key("title").value("Data Params"), key("url").value(Endpoint.Api.USER),
+                                   key("method").value("POST")), fieldWithPath("email")
+                                .description("")
+                                .attributes(key("required").value("O"))
+                                .attributes(key("constraints").value("@Email 형식을 맞추어야 함")), fieldWithPath("password")
+                                .description("")
+                                .attributes(key("required").value("O"))
+                                .attributes(key("constraints").value("Null 불가, 빈 문자열 불가")))));
     }
 
     private UserSignupRequestDto getUserSignupRequestDto(String email, String password) {
-        return UserSignupRequestDto.builder().email(email).password(password).build();
+        return UserSignupRequestDto
+                .builder()
+                .email(email)
+                .password(password)
+                .build();
     }
 
     private String getValidPassword() {
@@ -117,9 +125,10 @@ class UserApiControllerTest {
         UserSignupRequestDto signupRequestDto = getUserSignupRequestDto(getValidEmail(), getValidPassword());
         userApiController.signup(signupRequestDto, request);
 
-        mockMvc.perform(post(Endpoint.Api.USER)
-                        .contentType(MediaType.APPLICATION_JSON)
-                        .content(objectMapper.writeValueAsString(signupRequestDto)))
+        mockMvc
+                .perform(post(Endpoint.Api.USER)
+                                 .contentType(MediaType.APPLICATION_JSON)
+                                 .content(objectMapper.writeValueAsString(signupRequestDto)))
                 .andExpect(status().isConflict());
     }
 
@@ -129,9 +138,10 @@ class UserApiControllerTest {
     void testSignupIsFailedByEmailFormat(String invalidEmail) throws Exception {
         UserSignupRequestDto signupRequestDto = getUserSignupRequestDto(invalidEmail, getValidPassword());
 
-        mockMvc.perform(post(Endpoint.Api.USER)
-                        .contentType(MediaType.APPLICATION_JSON)
-                        .content(objectMapper.writeValueAsString(signupRequestDto)))
+        mockMvc
+                .perform(post(Endpoint.Api.USER)
+                                 .contentType(MediaType.APPLICATION_JSON)
+                                 .content(objectMapper.writeValueAsString(signupRequestDto)))
                 .andExpect(status().isBadRequest());
     }
 
@@ -141,9 +151,10 @@ class UserApiControllerTest {
     void testSignupIsFailedByEmptyEmail(String emptyEmail) throws Exception {
         UserSignupRequestDto signupRequestDto = getUserSignupRequestDto(emptyEmail, getValidPassword());
 
-        mockMvc.perform(post(Endpoint.Api.USER)
-                        .contentType(MediaType.APPLICATION_JSON)
-                        .content(objectMapper.writeValueAsString(signupRequestDto)))
+        mockMvc
+                .perform(post(Endpoint.Api.USER)
+                                 .contentType(MediaType.APPLICATION_JSON)
+                                 .content(objectMapper.writeValueAsString(signupRequestDto)))
                 .andExpect(status().isBadRequest());
     }
 
@@ -153,9 +164,10 @@ class UserApiControllerTest {
     void testSignupIsFailedByEmptyPassword(String emptyPassword) throws Exception {
         UserSignupRequestDto signupRequestDto = getUserSignupRequestDto(getValidEmail(), emptyPassword);
 
-        mockMvc.perform(post(Endpoint.Api.USER)
-                        .contentType(MediaType.APPLICATION_JSON)
-                        .content(objectMapper.writeValueAsString(signupRequestDto)))
+        mockMvc
+                .perform(post(Endpoint.Api.USER)
+                                 .contentType(MediaType.APPLICATION_JSON)
+                                 .content(objectMapper.writeValueAsString(signupRequestDto)))
                 .andExpect(status().isBadRequest());
     }
 
@@ -169,25 +181,28 @@ class UserApiControllerTest {
 
         UserLoginRequestDto loginRequestDto = getLoginRequestDto(getValidEmail(), getValidPassword());
 
-        mockMvc.perform(post(Endpoint.Api.LOGIN)
-                        .contentType(MediaType.APPLICATION_JSON)
-                        .content(objectMapper.writeValueAsString(loginRequestDto)))
+        mockMvc
+                .perform(post(Endpoint.Api.LOGIN)
+                                 .contentType(MediaType.APPLICATION_JSON)
+                                 .content(objectMapper.writeValueAsString(loginRequestDto)))
                 .andExpect(status().isOk())
-                .andDo(document("login",
-                        requestFields(
-                                attributes(
-                                        key("title").value("Data Params"), key("url").value(Endpoint.Api.LOGIN),
-                                        key("method").value("POST")),
-                                fieldWithPath("email").description("").
-                                        attributes(key("required").value("O"))
-                                        .attributes(key("constraints").value("@Email 형식을 맞추어야 함")),
-                                fieldWithPath("password").description("")
-                                        .attributes(key("required").value("O"))
-                                        .attributes(key("constraints").value("Null 불가, 빈 문자열 불가")))));
+                .andDo(document("login", requestFields(
+                        attributes(key("title").value("Data Params"), key("url").value(Endpoint.Api.LOGIN),
+                                   key("method").value("POST")), fieldWithPath("email")
+                                .description("")
+                                .attributes(key("required").value("O"))
+                                .attributes(key("constraints").value("@Email 형식을 맞추어야 함")), fieldWithPath("password")
+                                .description("")
+                                .attributes(key("required").value("O"))
+                                .attributes(key("constraints").value("Null 불가, 빈 문자열 불가")))));
     }
 
     private UserLoginRequestDto getLoginRequestDto(String email, String password) {
-        return UserLoginRequestDto.builder().email(email).password(password).build();
+        return UserLoginRequestDto
+                .builder()
+                .email(email)
+                .password(password)
+                .build();
     }
 
     @DisplayName("회원가입 하지 않은 이메일로 로그인 시도로 인한 로그인 실패")
@@ -195,9 +210,10 @@ class UserApiControllerTest {
     void testLoginIsFailedByNotExistEmail() throws Exception {
         UserLoginRequestDto loginRequestDto = getLoginRequestDto(getNotExistEmail(), getValidPassword());
 
-        mockMvc.perform(post(Endpoint.Api.LOGIN)
-                        .contentType(MediaType.APPLICATION_JSON)
-                        .content(objectMapper.writeValueAsString(loginRequestDto)))
+        mockMvc
+                .perform(post(Endpoint.Api.LOGIN)
+                                 .contentType(MediaType.APPLICATION_JSON)
+                                 .content(objectMapper.writeValueAsString(loginRequestDto)))
                 .andExpect(status().isUnauthorized());
     }
 
@@ -211,9 +227,10 @@ class UserApiControllerTest {
     void testLoginIsFailedByEmailFormat(String invalidEmail) throws Exception {
         UserLoginRequestDto loginRequestDto = getLoginRequestDto(invalidEmail, getValidPassword());
 
-        mockMvc.perform(post(Endpoint.Api.LOGIN)
-                        .contentType(MediaType.APPLICATION_JSON)
-                        .content(objectMapper.writeValueAsString(loginRequestDto)))
+        mockMvc
+                .perform(post(Endpoint.Api.LOGIN)
+                                 .contentType(MediaType.APPLICATION_JSON)
+                                 .content(objectMapper.writeValueAsString(loginRequestDto)))
                 .andExpect(status().isUnauthorized());
     }
 
@@ -223,9 +240,10 @@ class UserApiControllerTest {
     void testLoginIsFailedByEmptyEmail(String emptyEmail) throws Exception {
         UserLoginRequestDto loginRequestDto = getLoginRequestDto(emptyEmail, getValidPassword());
 
-        mockMvc.perform(post(Endpoint.Api.LOGIN)
-                        .contentType(MediaType.APPLICATION_JSON)
-                        .content(objectMapper.writeValueAsString(loginRequestDto)))
+        mockMvc
+                .perform(post(Endpoint.Api.LOGIN)
+                                 .contentType(MediaType.APPLICATION_JSON)
+                                 .content(objectMapper.writeValueAsString(loginRequestDto)))
                 .andExpect(status().isBadRequest());
     }
 
@@ -235,9 +253,10 @@ class UserApiControllerTest {
     void testLoginIsFailedByEmptyPassword(String emptyPassword) throws Exception {
         UserLoginRequestDto loginRequestDto = getLoginRequestDto(getValidEmail(), emptyPassword);
 
-        mockMvc.perform(post(Endpoint.Api.LOGIN)
-                        .contentType(MediaType.APPLICATION_JSON)
-                        .content(objectMapper.writeValueAsString(loginRequestDto)))
+        mockMvc
+                .perform(post(Endpoint.Api.LOGIN)
+                                 .contentType(MediaType.APPLICATION_JSON)
+                                 .content(objectMapper.writeValueAsString(loginRequestDto)))
                 .andExpect(status().isBadRequest());
     }
 
@@ -245,7 +264,8 @@ class UserApiControllerTest {
     @WithMockUser
     @Test
     void testLogoutIsSuccess() throws Exception {
-        mockMvc.perform(post(Endpoint.Api.LOGOUT))
+        mockMvc
+                .perform(post(Endpoint.Api.LOGOUT))
                 .andExpect(status().isOk())
                 .andDo(document("logout"));
     }
