@@ -24,9 +24,10 @@ public class AjaxAuthenticationSuccessHandler implements AuthenticationSuccessHa
         response.setContentType(MediaType.APPLICATION_JSON_VALUE);
 
         UserAuthenticationDto userAuthenticationDto = (UserAuthenticationDto) authentication.getPrincipal();
-        objectMapper.writeValue(response.getWriter(), UserLoginResponseDto.of(Me.builder()
-                .id(userAuthenticationDto.getId())
-                .email(userAuthenticationDto.getUsername())
-                .build()));
+        objectMapper.writeValue(response.getWriter(), UserLoginResponseDto.of(Me
+                                                                                      .builder()
+                                                                                      .id(userAuthenticationDto.getId())
+                                                                                      .email(userAuthenticationDto.getUsername())
+                                                                                      .build()));
     }
 }

@@ -26,7 +26,8 @@ public class UserDetailsServiceImpl implements UserDetailsService {
             throw new UsernameNotFoundException(String.format("No User founded with email: %s", email));
         }
 
-        return UserAuthenticationDto.builder()
+        return UserAuthenticationDto
+                .builder()
                 .id(user.getId())
                 .email(user.getEmail())
                 .password(user.getPassword())

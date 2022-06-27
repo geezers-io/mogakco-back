@@ -18,12 +18,17 @@ import static io.geezers.mogakco.api.util.ApiErrorResponseUtil.getErrorResponseD
 public class UserApiControllerAdvice {
 
     @ExceptionHandler(AlreadyUserExistingException.class)
-    public ResponseEntity<ErrorResponseDto> handleAlreadyUserExistingException(AlreadyUserExistingException alreadyUserExistingException) {
-        return getErrorResponseDtoResponseEntity(HttpServletResponse.SC_CONFLICT, alreadyUserExistingException.getMessage());
+    public ResponseEntity<ErrorResponseDto> handleAlreadyUserExistingException(
+            AlreadyUserExistingException alreadyUserExistingException) {
+        return getErrorResponseDtoResponseEntity(
+                HttpServletResponse.SC_CONFLICT,
+                alreadyUserExistingException.getMessage());
     }
 
     @ExceptionHandler(MethodArgumentNotValidException.class)
     public ResponseEntity<ErrorResponseDto> handleBadRequestException(Exception methodArgumentNotValidException) {
-        return getErrorResponseDtoResponseEntity(HttpServletResponse.SC_BAD_REQUEST, methodArgumentNotValidException.getMessage());
+        return getErrorResponseDtoResponseEntity(
+                HttpServletResponse.SC_BAD_REQUEST,
+                methodArgumentNotValidException.getMessage());
     }
 }

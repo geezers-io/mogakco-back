@@ -42,16 +42,29 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
     @Override
     protected void configure(HttpSecurity http) throws Exception {
-        http.csrf().disable();
-        http.headers().frameOptions().disable();
-        http.cors().configurationSource(corsConfigurationSource());
-        http.authorizeRequests()
-                .antMatchers(DEFAULT_ACCESS_WHITELIST).permitAll()
-                .antMatchers(HttpMethod.POST, Endpoint.Api.USER).permitAll()
-                .antMatchers(HttpMethod.GET, Endpoint.Api.AUTH).permitAll()
-                .anyRequest().authenticated();
         http
-                .formLogin().disable();
+                .csrf()
+                .disable();
+        http
+                .headers()
+                .frameOptions()
+                .disable();
+        http
+                .cors()
+                .configurationSource(corsConfigurationSource());
+        http
+                .authorizeRequests()
+                .antMatchers(DEFAULT_ACCESS_WHITELIST)
+                .permitAll()
+                .antMatchers(HttpMethod.POST, Endpoint.Api.USER)
+                .permitAll()
+                .antMatchers(HttpMethod.GET, Endpoint.Api.AUTH)
+                .permitAll()
+                .anyRequest()
+                .authenticated();
+        http
+                .formLogin()
+                .disable();
         http
                 .logout()
                 .logoutUrl(Endpoint.Api.LOGOUT)
@@ -86,7 +99,8 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     private AuthenticationEntryPoint authenticationEntryPoint() {
         return (request, response, accessDeniedException) -> {
             response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
-            objectMapper.writeValue(response.getWriter(), ErrorResponseDto.builder()
+            objectMapper.writeValue(response.getWriter(), ErrorResponseDto
+                    .builder()
                     .message(accessDeniedException.getMessage())
                     .status(HttpServletResponse.SC_UNAUTHORIZED)
                     .build());
@@ -96,7 +110,8 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     private AccessDeniedHandler accessDeniedHandler() {
         return (request, response, accessDeniedException) -> {
             response.setStatus(HttpServletResponse.SC_FORBIDDEN);
-            objectMapper.writeValue(response.getWriter(), ErrorResponseDto.builder()
+            objectMapper.writeValue(response.getWriter(), ErrorResponseDto
+                    .builder()
                     .message(accessDeniedException.getMessage())
                     .status(HttpServletResponse.SC_FORBIDDEN)
                     .build());
@@ -120,7 +135,9 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     }
 
     private AjaxLoginProcessingFilter ajaxLoginProcessingFilter() {
-        AjaxLoginProcessingFilter ajaxLoginProcessingFilter = new AjaxLoginProcessingFilter(Endpoint.Api.LOGIN, ajaxAuthenticationManager());
+        AjaxLoginProcessingFilter ajaxLoginProcessingFilter = new AjaxLoginProcessingFilter(
+                Endpoint.Api.LOGIN,
+                ajaxAuthenticationManager());
         ajaxLoginProcessingFilter.setAuthenticationManager(ajaxAuthenticationManager());
         ajaxLoginProcessingFilter.setAuthenticationSuccessHandler(authenticationSuccessHandler());
         ajaxLoginProcessingFilter.setAuthenticationFailureHandler(authenticationFailureHandler());
