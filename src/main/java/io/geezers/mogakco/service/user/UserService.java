@@ -1,6 +1,5 @@
 package io.geezers.mogakco.service.user;
 
-import io.geezers.mogakco.domain.dto.user.Me;
 import io.geezers.mogakco.domain.dto.user.UserSignupRequestDto;
 import io.geezers.mogakco.domain.entity.User;
 import io.geezers.mogakco.exception.AlreadyUserExistingException;

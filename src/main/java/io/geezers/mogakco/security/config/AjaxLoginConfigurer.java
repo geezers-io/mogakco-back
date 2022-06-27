@@ -34,7 +34,8 @@ public class AjaxLoginConfigurer<H extends HttpSecurityBuilder<H>> extends Abstr
             authenticationManager = http.getSharedObject(AuthenticationManager.class);
         }
 
-        SessionAuthenticationStrategy sessionAuthenticationStrategy = http.getSharedObject(SessionAuthenticationStrategy.class);
+        SessionAuthenticationStrategy sessionAuthenticationStrategy = http.getSharedObject(
+                SessionAuthenticationStrategy.class);
 
         if (sessionAuthenticationStrategy != null) {
             getAuthenticationFilter().setSessionAuthenticationStrategy(sessionAuthenticationStrategy);

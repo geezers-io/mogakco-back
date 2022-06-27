@@ -28,7 +28,9 @@ public class CommonApiControllerAdvice {
 
     @ExceptionHandler(HttpRequestMethodNotSupportedException.class)
     public ResponseEntity<ErrorResponseDto> handleRequestMethodNotSupportedException(Exception methodArgumentNotValidException) {
-        return getErrorResponseDtoResponseEntity(HttpServletResponse.SC_METHOD_NOT_ALLOWED, methodArgumentNotValidException.getMessage());
+        return getErrorResponseDtoResponseEntity(
+                HttpServletResponse.SC_METHOD_NOT_ALLOWED,
+                methodArgumentNotValidException.getMessage());
     }
 
     @ExceptionHandler

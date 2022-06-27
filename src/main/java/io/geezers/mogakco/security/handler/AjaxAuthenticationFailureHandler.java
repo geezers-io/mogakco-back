@@ -1,9 +1,9 @@
 package io.geezers.mogakco.security.handler;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import io.geezers.mogakco.web.dto.error.ErrorResponseDto;
 import io.geezers.mogakco.security.exception.AjaxMethodNotSupportedException;
 import io.geezers.mogakco.security.exception.LoginArgumentNotValidException;
+import io.geezers.mogakco.web.dto.error.ErrorResponseDto;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.MediaType;
 import org.springframework.security.core.AuthenticationException;
@@ -30,7 +30,8 @@ public class AjaxAuthenticationFailureHandler implements AuthenticationFailureHa
             response.setStatus(HttpServletResponse.SC_METHOD_NOT_ALLOWED);
         }
 
-        ErrorResponseDto errorResponseDto = ErrorResponseDto.builder()
+        ErrorResponseDto errorResponseDto = ErrorResponseDto
+                .builder()
                 .status(response.getStatus())
                 .message(exception.getMessage())
                 .build();

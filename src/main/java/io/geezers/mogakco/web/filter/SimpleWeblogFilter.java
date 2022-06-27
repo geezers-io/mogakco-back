@@ -1,4 +1,4 @@
-package io.geezers.mogakco.api.common;
+package io.geezers.mogakco.web.filter;
 
 import lombok.extern.slf4j.Slf4j;
 
